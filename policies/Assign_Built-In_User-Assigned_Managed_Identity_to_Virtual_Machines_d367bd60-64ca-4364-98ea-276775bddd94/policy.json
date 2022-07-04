@@ -28,6 +28,14 @@
     },
     "defaultValue": ""
    },
+   "userAssignedIdentitySubscriptionId":{
+       "type": "String",
+       "metadata": {
+           "displayName": "Subscription Id of the managed identity resource group",
+           "description": "Sub id of managed id resource group"
+       },
+       "defaultVaule": ""
+   },
    "identityResourceGroup": {
     "type": "String",
     "metadata": {
@@ -80,7 +88,7 @@
          },
          {
           "field": "identity.userAssignedIdentities",
-          "containsKey": "[if(parameters('bringYourOwnUserAssignedManagedIdentity'), concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', trim(parameters('identityResourceGroup')), '/providers/Microsoft.ManagedIdentity/userAssignedIdentities/', trim(parameters('userAssignedIdentityName'))), concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/Built-In-Identity-RG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/Built-In-Identity-', field('location')))]"
+          "containsKey": "[if(parameters('bringYourOwnUserAssignedManagedIdentity'), concat('/subscriptions/',trim(parameters('userAssignedIdentitySubscriptionId')),'/resourceGroups/', trim(parameters('identityResourceGroup')), '/providers/Microsoft.ManagedIdentity/userAssignedIdentities/', trim(parameters('userAssignedIdentityName'))), concat('/subscriptions/',trim(parameters('userAssignedIdentitySubscriptionId')),'/resourceGroups/Built-In-Identity-RG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/Built-In-Identity-',field('location')))]"
          }
         ]
        },
@@ -112,6 +120,9 @@
         },
         "location": {
          "value": "[field('location')]"
+        },
+        "uaiRGSubId": {
+            "value": "[parameters('userAssignedIdentitySubscriptionId')]"
         },
         "uaName": {
          "value": "[if(parameters('bringYourOwnUserAssignedManagedIdentity'), parameters('userAssignedIdentityName'), 'Built-In-Identity')]"
@@ -156,13 +167,13 @@
          }
         },
         "variables": {
-         "uaNameWithLocation": "[concat(parameters('uaName'),'-', parameters('location'))]",
-         "precreatedUaId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', trim(parameters('identityResourceGroup')), '/providers/Microsoft.ManagedIdentity/userAssignedIdentities/', trim(parameters('uaName')))]",
-         "autocreatedUaId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', trim(parameters('identityResourceGroup')), '/providers/Microsoft.ManagedIdentity/userAssignedIdentities/', trim(parameters('uaName')), '-', parameters('location'))]",
-         "deployUALockName": "[concat('deployUALock-', uniqueString(deployment().name))]",
-         "deployUAName": "[concat('deployUA-', uniqueString(deployment().name))]",
+         "uaNameWithLocation": "[concat(parameters('uaName'),'-',parameters('location'))]",
+         "precreatedUaId": "[concat('/subscriptions/',trim(parameters('userAssignedIdentitySubscriptionId')),'/resourceGroups/', trim(parameters('identityResourceGroup')), '/providers/Microsoft.ManagedIdentity/userAssignedIdentities/', trim(parameters('uaName')))]",
+         "autocreatedUaId": "[concat('/subscriptions/',trim(parameters('userAssignedIdentitySubscriptionId')),'/resourceGroups/', trim(parameters('identityResourceGroup')), '/providers/Microsoft.ManagedIdentity/userAssignedIdentities/', trim(parameters('uaName')), '-', parameters('location'))]",
+         "deployUALockName": "[concat('deployUALock-',uniqueString(deployment().name))]",
+         "deployUAName": "[concat('deployUA-',uniqueString(deployment().name))]",
          "deployGetResourceProperties": "[concat('deployGetResourceProperties-', uniqueString(deployment().name))]",
-         "deployAssignUAName": "[concat('deployAssignUA-', uniqueString(deployment().name))]"
+         "deployAssignUAName": "[concat('deployAssignUA-',uniqueString(deployment().name))]"
         },
         "resources": [
          {
