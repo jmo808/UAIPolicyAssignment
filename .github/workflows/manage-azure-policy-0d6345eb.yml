@@ -24,7 +24,6 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZURE_CREDENTIALS_0d6345eb}}
-        allow-no-subscriptions: true
     - name: Create or Update Azure Policies
       uses: azure/manage-azure-policy@v0
       with:
