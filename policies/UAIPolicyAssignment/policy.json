@@ -34,7 +34,7 @@
            "displayName": "Subscription Id of the managed identity resource group",
            "description": "Sub id of managed id resource group"
        },
-       "defaultVaule": ""
+       "defaultValue": ""
    },
    "identityResourceGroup": {
     "type": "String",
