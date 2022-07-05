@@ -121,7 +121,7 @@
         "location": {
          "value": "[field('location')]"
         },
-        "uaiRGSubId": {
+        "userAssignedIdentitySubscriptionId": {
             "value": "[parameters('userAssignedIdentitySubscriptionId')]"
         },
         "uaName": {
