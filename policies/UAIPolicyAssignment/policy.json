@@ -150,6 +150,9 @@
          "location": {
           "type": "string"
          },
+         "userAssignedIdentitySubscriptionId":{
+            "type": "string"
+         },
          "uaName": {
           "type": "string"
          },
